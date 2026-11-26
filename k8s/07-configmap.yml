@@ -1,0 +1,10 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: devboard-configmap
+  namespace: devboard-ns
+
+data:
+  POSTGRES_USER: devboard # plain text we dont need to use base64 encoding
+  POSTGRES_DB: devboard
+  PORT: "8080"
