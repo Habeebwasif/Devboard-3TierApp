@@ -28,7 +28,7 @@ spec:
         - name: pgdata
           mountPath: /var/lib/postgresql/data
         - name: init
-          mountPath: /docker-entrypoint-initdb.d:ro
+          mountPath: /docker-entrypoint-initdb.d
         env:
           - name: POSTGRES_USER
             valueFrom:
@@ -47,16 +47,21 @@ spec:
               configMapKeyRef:
                 name: devboard-configmap
                 key: POSTGRES_DB
-      readinessProbe:
-        exec:
-          command:
+        readinessProbe:
+          exec:
+           command:
             - pg_isready
             - -U
             - $(POSTGRES_USER)
             - -d
             - $(POSTGRES_DB)
-        initialDelaySeconds: 5
-        periodSeconds: 10
+          initialDelaySeconds: 5
+          periodSeconds: 10
+
+      volumes:                                  
+        - name: init
+          configMap:
+            name: postgres-init
 
   volumeClaimTemplates:
   - metadata:
